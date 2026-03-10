@@ -13,7 +13,7 @@
     "web": "npm run dev -w apps/web",
     "deploy": "npm run build && npm run deploy:web && npm run deploy:api",
     "deploy:web": "npm run build -w apps/web && sudo cp -r apps/web/dist/* /var/www/web/",
-    "deploy:api": "npm run build -w apps/api && pm2 restart all"
+    "deploy:api": "npm run build -w apps/api && pm2 restart api"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
