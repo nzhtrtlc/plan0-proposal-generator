@@ -5,6 +5,8 @@ export type FormState = {
   date: string;
   clientEmail: string;
   clientName: string;
+  clientCompanyName: string;
+  clientPosition: string;
   clientCompanyAddress: string;
   assetClass: string;
   projectDescription: string;
@@ -12,6 +14,8 @@ export type FormState = {
   listOfServices: string[];
   fee: FeeSummary;
   bios: Bio[];
+  notes: string;
+  signatures: Staff[];
 };
 
 export type Bio = {
@@ -19,9 +23,23 @@ export type Bio = {
   name: string;
 };
 
-export type ProposedMandate = "Estimating" | "Proforma" | "Project Monitoring";
+export type Staff = {
+  id: string;
+  name: string;
+  surname: string;
+};
+
+export type StaffWithRate = {
+  id: string;
+  name: string;
+  surname: string;
+  rate: number;
+};
+
+export type ProposedMandate = "Estimating" | "Proforma";
 
 export type FeeLine = {
+  id: string;
   staffId: string;
   staffName: string;
   hours: number;
@@ -29,8 +47,13 @@ export type FeeLine = {
   lineTotal: number;
 };
 
-export type FeeSummary = {
+export type MandateSection = {
   lines: FeeLine[];
+  suggestedFee: number | null;
+};
+
+export type FeeSummary = {
+  sections: Record<string, MandateSection>;
   total: number;
 };
 
@@ -40,6 +63,8 @@ export type GenerateProposalPayload = {
   date: string;
   clientEmail: string;
   clientName: string;
+  clientCompanyName: string;
+  clientPosition: string;
   clientCompanyAddress: string;
   assetClass: string;
   projectDescription: string;
@@ -48,6 +73,8 @@ export type GenerateProposalPayload = {
   proposedMandates: ProposedMandate[];
   listOfServices: string[];
   bios: string[]; // array of bio IDs
+  notes: string;
+  signatures: string[]; // array of staff IDs
 };
 
 export type Mandate = {

@@ -11,9 +11,10 @@ export default function Bios({
    value: Bio[];
 }) {
    const [availableBios, setAvailableBios] = useState<Bio[]>([]);
+   const [isLoading, setIsLoading] = useState(true);
 
    useEffect(() => {
-      getBios().then(setAvailableBios);
+      getBios().then(setAvailableBios).finally(() => setIsLoading(false));
    }, []);
 
    const handleChange = (selectedIds: string[]) => {
@@ -31,6 +32,8 @@ export default function Bios({
          }))}
          value={value.map((v) => v.id)}
          onChange={handleChange}
+         disabled={isLoading}
+         placeholder={isLoading ? "Loading..." : "Select options..."}
       />
    );
 }

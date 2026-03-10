@@ -1,4 +1,4 @@
-import type { GenerateProposalPayload } from "@packages/types";
+import type { GenerateProposalPayload, StaffWithRate } from "@packages/types";
 import { logger } from "@packages/utils";
 
 const API_URI =
@@ -47,6 +47,22 @@ export async function getBios() {
    return await res.json();
 }
 
+export async function getStaff() {
+   const res = await fetch(`${API_URI}/api/staff`);
+   if (!res.ok) {
+      throw new Error("Failed to fetch staff");
+   }
+   return await res.json();
+}
+
+export async function getStaffWithRates(): Promise<StaffWithRate[]> {
+   const res = await fetch(`${API_URI}/api/staff-rates`);
+   if (!res.ok) {
+      throw new Error("Failed to fetch staff rates");
+   }
+   return await res.json();
+}
+
 export async function downloadProposal(payload: GenerateProposalPayload) {
    logger.info({ payload }, "Doc Render Payload");
    const res = await fetch(`${API_URI}/api/generate-proposal`, {
@@ -72,7 +88,13 @@ export async function downloadProposal(payload: GenerateProposalPayload) {
 
    const a = document.createElement("a");
    a.href = url;
-   a.download = `proposal-output-${new Date().getSeconds()}.docx`;
+   const timeStr = new Date().toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+   }).replace(/\s/g, "");
+   a.download = `proposal-output-${timeStr}.docx`;
    document.body.appendChild(a);
    a.click();
    a.remove();

@@ -5,29 +5,17 @@ const router = Router();
 
 router.get("/", async (req, res) => {
 	try {
-		const result = await pool.query(`
-			SELECT b.id, s.name || ' ' || s.surname AS name
-			FROM proposal_generator."bios" b
-			JOIN proposal_generator.staff s ON b.staff_id = s.id
-			ORDER BY name ASC
-		`);
+		const result = await pool.query(
+			"SELECT id, name, surname FROM proposal_generator.staff ORDER BY name ASC"
+		);
 		res.json(result.rows);
 	} catch (err: any) {
 		console.error("Database query error:", err);
 		res.status(500).json({
 			error: "Database Error",
 			message: err.message || "Unknown error occurred while fetching data",
-			details: {
-				code: err.code,
-				routine: err.routine
-			},
-			debug: {
-				has_db_url: !!process.env.DATABASE_URL,
-				url_len: process.env.DATABASE_URL?.length
-			}
 		});
 	}
 });
 
 export default router;
-

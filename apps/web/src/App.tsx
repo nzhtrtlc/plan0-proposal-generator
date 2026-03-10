@@ -7,7 +7,7 @@ function App() {
          <Header />
 
          <main className="flex flex-1 items-center justify-center px-4">
-            <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow dark:bg-gray-900 flex flex-col gap-4 my-4">
+            <div className="w-full max-w-4xl rounded-lg bg-white p-6 shadow dark:bg-gray-900 flex flex-col gap-4 my-4">
                <FormFields />
             </div>
          </main>

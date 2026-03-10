@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "private": true,
   "type": "commonjs",
   "scripts": {
@@ -12,6 +12,7 @@
     "@google/genai": "^1.35.0",
     "cors": "^2.8.5",
     "docxtemplater": "^3.67.6",
+    "docxtemplater-image-module-free": "^1.1.1",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "multer": "^2.0.2",

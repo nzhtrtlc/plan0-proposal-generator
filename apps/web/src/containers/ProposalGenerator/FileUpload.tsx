@@ -24,7 +24,7 @@ export function FileUpload({
             <button
                type="button"
                onClick={onClear}
-               className="text-gray-500 hover:text-red-500 transition-colors px-2"
+               className="text-gray-500 hover:text-red-500 transition-colors px-2 cursor-pointer"
             >
                ✕
             </button>

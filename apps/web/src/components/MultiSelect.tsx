@@ -11,6 +11,7 @@ type MultiSelectProps<T extends string | number> = {
    onChange: (value: T[]) => void;
    placeholder?: string;
    disabled?: boolean;
+   maxItems?: number;
 };
 
 export function MultiSelect<T extends string | number>({
@@ -19,6 +20,7 @@ export function MultiSelect<T extends string | number>({
    onChange,
    placeholder = "Select options...",
    disabled = false,
+   maxItems,
 }: MultiSelectProps<T>) {
    const [isOpen, setIsOpen] = useState(false);
    const [searchTerm, setSearchTerm] = useState("");
@@ -40,10 +42,11 @@ export function MultiSelect<T extends string | number>({
       [options, searchTerm],
    );
    const toggleOption = (val: T) => {
-      const newValue = value.includes(val)
-         ? value.filter((v) => v !== val)
-         : [...value, val];
-      onChange(newValue);
+      if (value.includes(val)) {
+         onChange(value.filter((v) => v !== val));
+      } else if (maxItems === undefined || value.length < maxItems) {
+         onChange([...value, val]);
+      }
    };
 
    const removeValue = (e: React.MouseEvent, val: T) => {
