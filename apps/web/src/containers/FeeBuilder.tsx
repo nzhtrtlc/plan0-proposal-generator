@@ -12,6 +12,16 @@ import { getStaffWithRates } from "../utils/actions";
 
 const STORAGE_KEY = (mandate: string) => `fee_section_${mandate}`;
 
+function uuid(): string {
+   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      return (crypto as { randomUUID: () => string }).randomUUID();
+   }
+   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+   });
+}
+
 export function clearFeeStorage() {
    localStorage.removeItem("fee_section_Estimating");
    localStorage.removeItem("fee_section_Proforma");
@@ -25,7 +35,7 @@ function loadSection(mandate: string, firstStaff: StaffWithRate | undefined): Ma
          // Coerce numeric fields that may have been serialized as strings
          parsed.lines = parsed.lines.map((l) => ({
             ...l,
-            id: l.id ?? crypto.randomUUID(),
+            id: l.id ?? uuid(),
             hours: Number(l.hours),
             rate: Number(l.rate),
             lineTotal: Number(l.lineTotal),
@@ -38,7 +48,7 @@ function loadSection(mandate: string, firstStaff: StaffWithRate | undefined): Ma
    }
    return {
       lines: firstStaff
-         ? [{ id: crypto.randomUUID(), staffId: firstStaff.id, staffName: firstStaff.name, hours: 1, rate: Number(firstStaff.rate), lineTotal: Number(firstStaff.rate) }]
+         ? [{ id: uuid(), staffId: firstStaff.id, staffName: firstStaff.name, hours: 1, rate: Number(firstStaff.rate), lineTotal: Number(firstStaff.rate) }]
          : [],
       suggestedFee: null,
    };
@@ -50,7 +60,7 @@ function saveSection(mandate: string, section: MandateSection) {
 
 function emptyLine(staff: StaffWithRate): FeeLine {
    const rate = Number(staff.rate);
-   return { id: crypto.randomUUID(), staffId: staff.id, staffName: staff.name, hours: 1, rate, lineTotal: rate };
+   return { id: uuid(), staffId: staff.id, staffName: staff.name, hours: 1, rate, lineTotal: rate };
 }
 
 function computeLineTotal(line: FeeLine): FeeLine {
